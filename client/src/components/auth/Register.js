@@ -1,12 +1,23 @@
 import { set } from 'mongoose';
-import React, { useState, useContext } from 'react';
-import AlertContext from '../../context/alert/alertContext'
+import React, { useState, useContext, useEffect } from 'react';
+import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
+
 
 
 const Register = () => {
   const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
 
   const { setAlert } = alertContext;
+  const { register, error, clearErrors } = authContext;
+
+  useEffect(() => {
+    if (error === 'User already exists') {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+  }, [error]);
 
   const [user, setUser] = useState({
     name: '',
@@ -26,7 +37,11 @@ const Register = () => {
     } else if (password !== password2) {
       setAlert(`Passwords don't match`, 'danger')
     } else {
-      console.log('register submit')
+      register({
+        name,
+        email,
+        password
+      });
     }
   }
 
