@@ -1,11 +1,8 @@
-import { set } from 'mongoose';
 import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 
-
-
-const Register = (props) => {
+const Register = props => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
 
@@ -13,14 +10,15 @@ const Register = (props) => {
   const { register, error, clearErrors, isAuthenticated } = authContext;
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       props.history.push('/');
     }
+
     if (error === 'User already exists') {
       setAlert(error, 'danger');
       clearErrors();
     }
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
 
   const [user, setUser] = useState({
@@ -36,10 +34,10 @@ const Register = (props) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    if (name === '' || email === ' ' || password === '') {
-      setAlert('Please enter all fields', 'danger')
+    if (name === '' || email === '' || password === '') {
+      setAlert('Please enter all fields', 'danger');
     } else if (password !== password2) {
-      setAlert(`Passwords don't match`, 'danger')
+      setAlert('Passwords do not match', 'danger');
     } else {
       register({
         name,
@@ -47,7 +45,7 @@ const Register = (props) => {
         password
       });
     }
-  }
+  };
 
   return (
     <div className='form-container'>
@@ -110,4 +108,5 @@ const Register = (props) => {
     </div>
   );
 };
-export default Register
+
+export default Register;
